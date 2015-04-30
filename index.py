@@ -50,5 +50,12 @@ def main(word):
     #     f.write(table.html().encode("utf-8"))
     #     f.close()
 
+def create_database():
+    from models import Word
+
+    Word.create_table()
+
 if __name__ == "__main__":
+    # create_database()
+
     main("door")
