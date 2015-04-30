@@ -1,1 +1,11 @@
-venv
+*.pyc
+*.pyo
+*.egg-info
+*.mo
+*.log
+*.tmp.*
+
+.DS_Store
+
+venv/
+storage/pdict.db
