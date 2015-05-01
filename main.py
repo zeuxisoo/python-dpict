@@ -17,6 +17,6 @@ if __name__ == "__main__":
         robot.create_database()
     elif options.start:
         robot = Robot()
-        robot.run("door")
+        robot.run()
     else:
         parser.print_help()
