@@ -3,7 +3,8 @@ from .consumer import AlphabetConsumer
 
 class AlphabetGroupProducer(object):
 
-    def __init__(self, alphabet_group):
+    def __init__(self, logger, alphabet_group):
+        self.logger         = logger
         self.alphabet_queue = Queue()
         self.alphabet_group = alphabet_group
 
@@ -11,7 +12,7 @@ class AlphabetGroupProducer(object):
         # Consumer pool
         consumers = []
         for i in xrange(0, len(self.alphabet_group)):
-            consumer = AlphabetConsumer(self.alphabet_queue)
+            consumer = AlphabetConsumer(self.logger, self.alphabet_queue)
             consumer.start()
 
             consumers.append(consumer)

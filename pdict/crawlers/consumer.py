@@ -2,10 +2,11 @@ from multiprocessing import Process
 
 class AlphabetConsumer(Process):
 
-    def __init__(self, queue):
+    def __init__(self, logger, queue):
         super(AlphabetConsumer, self).__init__()
 
-        self.queue = queue
+        self.logger = logger
+        self.queue  = queue
 
     def run(self):
         while True:
@@ -14,6 +15,6 @@ class AlphabetConsumer(Process):
             if isinstance(task, str) and task == 'quit':
                 break;
 
-            print task
+            self.logger.info("AlphabetConsumer Task: {0}".format(task))
 
-        print 'AlphabetConsumer Exit'
+        self.logger.info('AlphabetConsumer Action: Exit')

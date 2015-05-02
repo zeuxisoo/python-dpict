@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import string
+import logging
 from os import path
 from urllib import quote_plus
 from urllib2 import urlopen
@@ -12,7 +13,20 @@ from .crawlers import AlphabetGroupProducer
 class Robot(object):
 
     def __init__(self):
-        pass
+        self.logger = self.get_logger()
+
+    def get_logger(self):
+        logger = logging.getLogger(__name__)
+        logger.setLevel(logging.DEBUG)
+
+        logger_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+        logger_stream_handler = logging.StreamHandler()
+        logger_stream_handler.setLevel(logging.DEBUG)
+        logger_stream_handler.setFormatter(logger_formatter)
+        logger.addHandler(logger_stream_handler)
+
+        return logger
 
     def create_database(self):
         from .models import Word
@@ -24,5 +38,5 @@ class Robot(object):
         return [alphabet_list[i:i+group_size] for i in xrange(0, len(alphabet_list), group_size)]
 
     def run(self):
-        producer = AlphabetGroupProducer(self.alphabet_group(10))
+        producer = AlphabetGroupProducer(self.logger, self.alphabet_group())
         producer.start()
