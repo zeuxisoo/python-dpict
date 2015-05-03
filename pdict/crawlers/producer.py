@@ -1,24 +1,24 @@
-from multiprocessing import Queue
+from multiprocessing import Queue, cpu_count
 from .consumer import AlphabetConsumer
 
-class AlphabetGroupProducer(object):
+class AlphabetListProducer(object):
 
-    def __init__(self, logger, alphabet_group):
+    def __init__(self, logger, alphabet_list):
         self.logger         = logger
         self.alphabet_queue = Queue()
-        self.alphabet_group = alphabet_group
+        self.alphabet_list  = alphabet_list
 
     def start(self):
         # Consumer pool
         consumers = []
-        for i in xrange(0, len(self.alphabet_group)):
+        for i in xrange(0, cpu_count()):
             consumer = AlphabetConsumer(self.logger, self.alphabet_queue)
             consumer.start()
 
             consumers.append(consumer)
 
         # Add each alphabet array into queue
-        for alphabet in self.alphabet_group:
+        for alphabet in self.alphabet_list:
             self.alphabet_queue.put(alphabet)
 
         # Add quit keyword for exit consumer

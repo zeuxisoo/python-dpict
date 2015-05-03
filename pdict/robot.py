@@ -8,7 +8,7 @@ from urllib import quote_plus
 from urllib2 import urlopen
 from mimetypes import guess_type
 from pyquery import PyQuery as pq
-from .crawlers import AlphabetGroupProducer
+from .crawlers import AlphabetListProducer
 
 class Robot(object):
 
@@ -32,11 +32,9 @@ class Robot(object):
         from .models import Word
         Word.create_table()
 
-    def alphabet_group(self, group_size):
-        alphabet_list = list(string.lowercase)
-
-        return [alphabet_list[i:i+group_size] for i in xrange(0, len(alphabet_list), group_size)]
+    def alphabet_list(self):
+        return list(string.lowercase)
 
     def run(self):
-        producer = AlphabetGroupProducer(self.logger, self.alphabet_group())
+        producer = AlphabetListProducer(self.logger, self.alphabet_list())
         producer.start()
