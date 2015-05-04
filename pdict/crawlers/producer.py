@@ -6,13 +6,14 @@ class AlphabetListProducer(object):
     def __init__(self, logger, alphabet_list):
         self.logger         = logger
         self.alphabet_queue = Queue()
+        self.parse_queue    = Queue()
         self.alphabet_list  = alphabet_list
 
     def start(self):
         # Consumer pool
         consumers = []
         for i in xrange(0, cpu_count()):
-            consumer = AlphabetConsumer(self.logger, self.alphabet_queue)
+            consumer = AlphabetConsumer(self.logger, self.alphabet_queue, self.parse_queue)
             consumer.start()
 
             consumers.append(consumer)
