@@ -1,3 +1,3 @@
-# SaveDict
+# DPict
 
-A tools to make search words to offline from online dict
+A tools to make online words to offline
