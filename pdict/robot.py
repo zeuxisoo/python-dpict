@@ -3,11 +3,6 @@
 
 import string
 import logging
-from os import path
-from urllib import quote_plus
-from urllib2 import urlopen
-from mimetypes import guess_type
-from pyquery import PyQuery as pq
 from .crawlers import AlphabetListProducer
 
 class Robot(object):
