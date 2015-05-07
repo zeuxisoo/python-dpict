@@ -22,10 +22,9 @@ class AlphabetListProducer(object):
         for alphabet in self.alphabet_list:
             self.alphabet_queue.put(alphabet)
 
-        # Add quit keyword for exit consumer
-        for consumer in consumers:
-            self.alphabet_queue.put("quit")
-
         # Join the consumer
-        for consumer in consumers:
-            consumer.join()
+        try:
+            for consumer in consumers:
+                consumer.join()
+        except KeyboardInterrupt:
+            print("ByeBye")
