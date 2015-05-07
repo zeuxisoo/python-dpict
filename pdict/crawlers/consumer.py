@@ -1,3 +1,4 @@
+import signal
 from multiprocessing import Process, Lock
 from urllib import quote_plus
 from urllib2 import urlopen
@@ -14,10 +15,20 @@ class AlphabetConsumer(Process):
     def __init__(self, logger, alphabet_queue, parse_queue):
         super(AlphabetConsumer, self).__init__()
 
+        signal.signal(signal.SIGTERM, self.handler_sigterm)
+        signal.signal(signal.SIGQUIT, self.handler_sigquit)
+
+        self.is_stop         = False
         self.lock            = Lock()
         self.logger          = logger
         self.alphabet_queue  = alphabet_queue
         self.parse_queue     = parse_queue
+
+    def handler_sigterm(self):
+        self.is_stop = True
+
+    def handler_sigquit(self):
+        self.is_stop = True
 
     def log_info(self, message):
         self.logger.info("[{0}] {1}".format(self.name, message))
@@ -109,7 +120,7 @@ class AlphabetConsumer(Process):
 
     def run(self):
         try:
-            while True:
+            while not self.is_stop:
                 alphabet = self.alphabet_queue.get()
 
                 if isinstance(alphabet, str) and alphabet == 'quit':
